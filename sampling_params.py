@@ -208,7 +208,7 @@ class SamplingParams(
     guided_decoding: Optional[GuidedDecodingParams] = None
     logit_bias: Optional[Dict[int, float]] = None
     allowed_token_ids: Optional[List[int]] = None
-
+    return_hidden_states: Optional[bool] = None
     @staticmethod
     def from_optional(
         n: Optional[int] = 1,

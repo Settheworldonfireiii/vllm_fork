@@ -163,7 +163,7 @@ class EngineArgs:
     ignore_patterns: Optional[Union[str, List[str]]] = None
     preemption_mode: Optional[str] = None
     
-    hidden_states_to_save: Optional[dict] = None
+    
 
     scheduler_delay_factor: float = 0.0
     enable_chunked_prefill: Optional[bool] = None
@@ -1154,7 +1154,6 @@ class EngineArgs:
             decoding_config=decoding_config,
             observability_config=observability_config,
             prompt_adapter_config=prompt_adapter_config,
-            hidden_states_to_save = self.hidden_states_to_save,
         )
 
 

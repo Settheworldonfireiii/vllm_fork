@@ -2075,7 +2075,7 @@ class VllmConfig:
     observability_config: Optional[ObservabilityConfig] = None
     prompt_adapter_config: Optional[PromptAdapterConfig] = None
     quant_config: Optional[QuantizationConfig] = None
-    hidden_states_to_save: Optional[dict] = None
+
     @staticmethod
     def _get_quantization_config(
             model_config: ModelConfig,

@@ -210,7 +210,7 @@ class LLM:
         self.engine_class = self.get_engine_class()
 
         # TODO(rob): enable mp by default (issue with fork vs spawn)
-        pdb.set_trace()
+        #pdb.set_trace()
         self.llm_engine = self.engine_class.from_engine_args(
             engine_args, usage_context=UsageContext.LLM_CLASS)
 
@@ -408,7 +408,7 @@ class LLM:
             priority=priority)
         #pdb.set_trace()
         outputs = self._run_engine(use_tqdm=use_tqdm)
-        pdb.set_trace()
+        #pdb.set_trace()
         return self.engine_class.validate_outputs(outputs, RequestOutput)
 
     def beam_search(
@@ -926,7 +926,7 @@ class LLM:
         return params
 
     def _run_engine(
-            self, *, use_tqdm: bool
+            self, *, use_tqdm: bool,
     ) -> List[Union[RequestOutput, EmbeddingRequestOutput]]:
         # Initialize tqdm.
         if use_tqdm:
@@ -937,19 +937,21 @@ class LLM:
                 dynamic_ncols=True,
                 postfix=(f"est. speed input: {0:.2f} toks/s, "
                          f"output: {0:.2f} toks/s"),
-            )
+                )
 
         # Run the engine.
         outputs: List[Union[RequestOutput, EmbeddingRequestOutput]] = []
         total_in_toks = 0
         total_out_toks = 0
+
         while self.llm_engine.has_unfinished_requests():
             step_outputs = self.llm_engine.step()
             for output in step_outputs:
-                pdb.set_trace()
-                #output.hidden_states = self.llm_engine.hidden_states
-                del self.llm_engine.hidden_states
-                output.hidden_states.to("cpu", non_blocking=True)
+                #pdb.set_trace()
+
+                
+               
+                #output.hidden_states.to("cpu", non_blocking=True)
                 if output.finished:
                     outputs.append(output)
                     if use_tqdm:

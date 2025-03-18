@@ -245,14 +245,13 @@ class Qwen2Model(nn.Module):
 
     def __init__(self, *, vllm_config: VllmConfig, prefix: str = ""):
         super().__init__()
-        pdb.set_trace()
+        #pdb.set_trace()
         config = vllm_config.model_config.hf_config
         cache_config = vllm_config.cache_config
         quant_config = vllm_config.quant_config
 
         # TODO (@robertgshaw2): see if this can be moved out
-        self.hidden_states_to_save = vllm_config.hidden_states_to_save
-        
+                
         if (cache_config.sliding_window is not None
                 and hasattr(config, "max_window_layers")):
             raise ValueError("Sliding window for some but all layers is not "
@@ -308,8 +307,8 @@ class Qwen2Model(nn.Module):
         intermediate_tensors: Optional[IntermediateTensors] = None,
         inputs_embeds: Optional[torch.Tensor] = None,
     ) -> Union[torch.Tensor, IntermediateTensors]:
-        self.hidden_to_keep = []
-        self.hidden_to_keep.append(3)
+        
+      
         if get_pp_group().is_first_rank:
             if inputs_embeds is not None:
                 hidden_states = inputs_embeds
@@ -330,8 +329,6 @@ class Qwen2Model(nn.Module):
                 attn_metadata,
                 residual,
             )
-            if i in self.hidden_to_keep:
-                hs[i] = hidden_states
         if not get_pp_group().is_last_rank:
             return IntermediateTensors({
                 "hidden_states": hidden_states,

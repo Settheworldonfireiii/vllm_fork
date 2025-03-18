@@ -991,9 +991,8 @@ class GPUModelRunnerBase(ModelRunnerBase[TModelInputForGPU]):
         cache_config = self.cache_config
          
         self.is_driver_worker = is_driver_worker
-        #self.return_hidden_states = True
-        self.return_hidden_states = return_hidden_states
-
+        
+        
         self.device = self.device_config.device
         self.pin_memory = is_pin_memory_available()
 
@@ -1637,9 +1636,18 @@ class ModelRunner(GPUModelRunnerBase[ModelInputForGPUWithSamplingMetadata]):
         # TODO(andoorve): We can remove this once all
         # virtual engines share the same kv cache.
         virtual_engine = model_input.virtual_engine
-        if self.vllm_config.hidden_states_to_save is not None:
-            self.return_hidden_states = True
-      
+
+        """
+        if model_input.sampling_metadata.seq_groups:     
+            if model_input.sampling_metadata.seq_groups[0].sampling_params.return_hidden_states:
+                self.return_hidden_states = True
+            else:
+                self.return_hidden_states = False
+        """
+
+
+        if model_input.sampling_metadata.seq_groups:
+            self.return_hidden_states = model_input.sampling_metadata.seq_groups[0].sampling_params.return_hidden_states
         if prefill_meta is None and decode_meta.use_cuda_graph:
             assert model_input.input_tokens is not None
             graph_batch_size = model_input.input_tokens.shape[0]

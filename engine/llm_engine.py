@@ -1243,7 +1243,8 @@ class LLMEngine:
                 continue  # Avoids double processing
 
             scheduled_seq_group = scheduler_outputs.scheduled_seq_groups[i]
-
+            #pdb.set_trace()
+            #will revisit here when I will be creating the option of outputting custom hidden states
             seq_group = scheduled_seq_group.seq_group
             seq_group.maybe_set_first_token_time(now)
             request_output = RequestOutputFactory.create(
